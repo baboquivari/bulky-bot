@@ -5,6 +5,10 @@ var PORT = process.env.PORT || 9090 ;
 
 // app.use(express.static(path.resolve(__dirname, 'public')));
 
+app.get("/", function (req, res) {
+  res.send("Running smooth!");
+});
+
 app.post('/sms', (req, res) => {
     var twiml = new MessagingResponse();
 
