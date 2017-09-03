@@ -1,14 +1,16 @@
-var http = require('http');
 var express = require('express');
 var MessagingResponse = require('twilio').twiml.MessagingResponse;
 var app = express();
+var PORT = process.env.PORT || 9090 ;
+
+// app.use(express.static(path.resolve(__dirname, 'public')));
 
 app.post('/sms', (req, res) => {
     var twiml = new MessagingResponse();
 
     // TODO: Figure out how to grab text from user message
-    console.log(req.body);
-    console.log(res);
+    // console.log(req.body);
+    // console.log(res);
     
   twiml.message('BulkyBot hears you!!');
 
@@ -16,6 +18,10 @@ app.post('/sms', (req, res) => {
   res.end(twiml.toString());
 });
 
-http.createServer(app).listen(1337, () => {
-  console.log('Express server listening on port 1337');
+app.listen(PORT, (err) => {
+  if (err) {
+    console.log(err);
+    process.exit();
+  }
+  console.log(`listening on port ${PORT}`);
 });
