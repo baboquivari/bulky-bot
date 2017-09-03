@@ -1,0 +1,1 @@
+If API is bugging out, it may be because I restricted access in the Google Console. Unrestrict there.
