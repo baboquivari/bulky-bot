@@ -24,8 +24,8 @@ app.get("/", function (req, res) {
 // google auth will redirect back to here after authorisation - MUST match "redirect uri" field in the Google Console
 app.get("/redirect", (req, res) => {  
   console.log("Redirect successful - OAUTH implemented!");
-  console.log(res);
-  res.send("This shit working!" + res.body); 
+  console.log(req);
+  res.send("This shit working!" + req.uri.href); 
 
   // NOW WE HAVE TO EXTRACT THE RETURNED AUTH CODE (IT'S IN THE URL AT THE MOMENT) AND THEN CALL THE BELOW URL TO
   // GET A TOKEN. THEN, WE CAN ACCESS THESE SPREADSHEETS WILLY NILLY.
