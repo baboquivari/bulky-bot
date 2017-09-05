@@ -25,7 +25,8 @@ app.get("/", function (req, res) {
 app.get("/redirect", (req, res) => {  
   console.log("Redirect successful - OAUTH implemented!");
   console.log(res);
-  res.send("This shit working!" + res); 
+  var result = JSON.stringify(res)
+  res.send("This shit working!" + result); 
 
   // axios
   //   .get(`https://www.googleapis.com/oauth2/v4/token`)
