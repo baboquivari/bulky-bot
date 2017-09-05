@@ -25,8 +25,10 @@ app.get("/", function (req, res) {
 app.get("/redirect", (req, res) => {  
   console.log("Redirect successful - OAUTH implemented!");
   console.log(res);
-  var result = JSON.stringify(res)
-  res.send("This shit working!" + result); 
+  res.send("This shit working!" + res.body); 
+
+  // NOW WE HAVE TO EXTRACT THE RETURNED AUTH CODE (IT'S IN THE URL AT THE MOMENT) AND THEN CALL THE BELOW URL TO
+  // GET A TOKEN. THEN, WE CAN ACCESS THESE SPREADSHEETS WILLY NILLY.
 
   // axios
   //   .get(`https://www.googleapis.com/oauth2/v4/token`)
