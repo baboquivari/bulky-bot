@@ -9,7 +9,6 @@ const spreadsheetId = '1gEKLQVkBrJjl-UG0K10itiQ3C3Drbq7o2ESammDGbUI';
 const range = 'Sheet1!A2:C2';
 const API_KEY = process.env.API_KEY;
 // FIXME: Get rid of this explicit key BEFORE pushing to HEROKU!!!!!!!!!
-
 const PORT = process.env.PORT; // NEED TO CHANG THIS TO 9090 when hosting on HEROKU
 
 // HELPER FUNCS
@@ -22,6 +21,22 @@ app.get("/", function (req, res) {
   res.send("Running smooth!");
 });
 
+// google auth will redirect back to here after authorisation - MUST match "redirect uri" field in the Google Console
+app.post("/redirect", (req, res) => {
+  const twiml = new MessagingResponse();
+  
+  console.log("Redirect successful - OAUTH implemented!");
+  console.log(res);
+  res.send("This shit working!" + res);
+
+  twiml.message('Looks like the GoogleAuth redirect worked!');
+
+  res.writeHead(200, {'Content-Type': 'text/xml'});
+  res.end(twiml.toString());  
+})
+
+///////////////////////////////////////////////////////////////////////////////////////
+
 app.post('/sms', (req, res) => {
   const twiml = new MessagingResponse();
   const textBody = req.body.Body;
@@ -30,17 +45,6 @@ app.post('/sms', (req, res) => {
   let calories;
   getTextData(textBody);
   console.log(date);
-
-  function getTextData (text) {
-    text = text.split(' ');
-    protein = Number(text[0]);
-    calories = Number(text[1]);
-    date = moment().format("Do, MMM, YY");
-  }
-  function writeHead () {
-    res.writeHead(200, {'Content-Type': 'text/xml'});
-    res.end(twiml.toString());
-  }
 
   switch (textBody) {
     case 'Hey': twiml.message('Hey hey hey!');
@@ -90,6 +94,8 @@ app.post('/sms', (req, res) => {
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 });
+
+
 
 app.listen(PORT, (err) => {
   if (err) {
