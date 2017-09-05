@@ -22,17 +22,13 @@ app.get("/", function (req, res) {
 });
 
 // google auth will redirect back to here after authorisation - MUST match "redirect uri" field in the Google Console
-app.get("/redirect", (req, res) => {
-  const twiml = new MessagingResponse();
-  
+app.get("/redirect", (req, res) => {  
   console.log("Redirect successful - OAUTH implemented!");
   console.log(res);
-  res.send("This shit working!" + res);
+  res.send("This shit working!" + JSON.parse(res)); 
 
-  twiml.message('Looks like the GoogleAuth redirect worked!');
-
-  res.writeHead(200, {'Content-Type': 'text/xml'});
-  res.end(twiml.toString());  
+  // axios
+  //   .get(`https://www.googleapis.com/oauth2/v4/token`)
 })
 
 ///////////////////////////////////////////////////////////////////////////////////////
