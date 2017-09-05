@@ -22,7 +22,7 @@ app.get("/", function (req, res) {
 });
 
 // google auth will redirect back to here after authorisation - MUST match "redirect uri" field in the Google Console
-app.post("/redirect", (req, res) => {
+app.get("/redirect", (req, res) => {
   const twiml = new MessagingResponse();
   
   console.log("Redirect successful - OAUTH implemented!");
