@@ -66,6 +66,7 @@ app.post('/sms', (req, res) => {
             return acc;
           }, [0, 0])
 
+          // TODO: JUST GOTTA FIX THE MATH HERE!! Returning weird results sometimes at start of day
           twiml.message(`
           Daily totals:
           Protein: ${dailyTotal[0] + Number(textBody[0])}
