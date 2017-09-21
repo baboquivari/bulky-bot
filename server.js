@@ -68,8 +68,8 @@ app.post('/sms', (req, res) => {
 
           twiml.message(`
           Daily totals:
-          Protein: ${dailyTotal[0] + textBody[0]}
-          Calories: ${dailyTotal[1] + textBody[1]}
+          Protein: ${dailyTotal[0] + Number(textBody[0])}
+          Calories: ${dailyTotal[1] + Number(textBody[1])}
           
           Keep it up! :)
           `);
