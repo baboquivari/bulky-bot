@@ -1,0 +1,13 @@
+BULKYBOT FLOW
+
+I send 2 integers to my Twilio phone number
+It sends a POST to an /SMS endpoint at my web server, hosted on Heroku.
+My server then inputs these 2 integers into a MongoDB database, along with today's date.
+Then it reads all the protein / calories values from today's date...
+It uses this data to create a TWIML response, which sends a message back to the original phone number with a response like
+	"Todays Totals: Protein: 78, Calories: 1400 - Keep it up!"
+
+NON-MVP Stuff
+
+- Implement a weekly update that gets sent to my phone number.
+- Ask for images to store on a DB every week, so I can track my progress.
