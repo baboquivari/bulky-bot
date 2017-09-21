@@ -37,7 +37,7 @@ app.post('/sms', (req, res) => {
       break;
     default: { // THIS IS THE MEAT AND BONES OF BULKYBOT
       if (hasNumber(textBody)) {
-
+        // SAVE PROTEIN/CALORIES TO THE MLAB DB
         new Macro({
           date: today,
           protein: 50,
@@ -45,9 +45,11 @@ app.post('/sms', (req, res) => {
         })
         .save((err) => {
             if (err) console.log("ERROR");
-        
-            console.log('MACRO CREATED!');
         })
+
+        // THIS WHOLE THING FRIKKIN WORKS! JUST NEED TO EXTRACT FROM THE 'TEXTBODY' NOW
+
+      twiml.message(textBody);
         
       } else { // IF THERE'S NO NUMBERS IN THE TEXT BODY
         twiml.message('BulkyBot hears you!')
