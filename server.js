@@ -27,10 +27,11 @@ app.get("/", function (req, res) {
 
 app.post('/sms', (req, res) => {
   const twiml = new MessagingResponse();
-  const textBody = req.body.Body;
+  let textBody = req.body.Body;
   let date;
   let protein;
   let calories;
+  let dailyTotal;
 
   switch (textBody) {
     case 'Hey': twiml.message('Hey hey hey!');
@@ -49,12 +50,35 @@ app.post('/sms', (req, res) => {
             if (err) console.log("ERROR");
         })
 
-        // THIS WHOLE THING FRIKKIN WORKS! JUST NEED TO EXTRACT FROM THE 'TEXTBODY' NOW
-
-      // twiml.message(textBody);
-      // res.writeHead(200, {'Content-Type': 'text/xml'});
-      // res.end(twiml.toString());
+        // THIS WHOLE THING FRIKKIN WORKS! SUCCESSFULLY ADDING EACH ENTRY INTO DB
         
+        // NOW GOTTA READ FROM THE DB - ALL OF TODAY'S ENTRIES
+        Macro.find({date: today}, (err, result) => {
+          if (err) console.log("ERROR!");
+      
+          // RES IS JUST NICE TIDY JSON
+      
+          // WANNA NOW LOOP THROUGH ALL RETURNED JSON OBJECTS AND CALCULATE TOTAL PROTEIN AND CALORIES, USING THIS TO CREATE THE TWIML RESPONSE. BOOYA!
+          dailyTotal = result.reduce((acc, entry) => {
+            acc[0] += entry.protein;
+            acc[1] += entry.calories;
+
+            return acc;
+          }, [0, 0])
+
+          twiml.message(`
+          Daily totals:
+          Protein: ${dailyTotal[0]}
+          Calories: ${dailyTotal[1]}
+          
+          Keep it up! :)
+          `);
+    
+          res.writeHead(200, {'Content-Type': 'text/xml'});
+          res.end(twiml.toString());
+      })
+
+      
       } else { // IF THERE'S NO NUMBERS IN THE TEXT BODY
         twiml.message('BulkyBot hears you!')
         writeHead();
