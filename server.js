@@ -51,9 +51,9 @@ app.post('/sms', (req, res) => {
 
         // THIS WHOLE THING FRIKKIN WORKS! JUST NEED TO EXTRACT FROM THE 'TEXTBODY' NOW
 
-      twiml.message(textBody);
-      res.writeHead(200, {'Content-Type': 'text/xml'});
-      res.end(twiml.toString());
+      // twiml.message(textBody);
+      // res.writeHead(200, {'Content-Type': 'text/xml'});
+      // res.end(twiml.toString());
         
       } else { // IF THERE'S NO NUMBERS IN THE TEXT BODY
         twiml.message('BulkyBot hears you!')
