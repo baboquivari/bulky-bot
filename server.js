@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 3000; // NEED TO CHANG THIS TO 9090 when hostin
 mongoose.connect('mongodb://Tony:password@ds143734.mlab.com:43734/bulkybot');
 
 // HELPER FUNCS
-const hasNumber = str => /\d/.test(str);
+const hasNumber = str => /\d/.test(str); 
 
 // Parses incoming request bodies
 app.use(bodyParser());
@@ -37,11 +37,13 @@ app.post('/sms', (req, res) => {
       break;
     default: { // THIS IS THE MEAT AND BONES OF BULKYBOT
       if (hasNumber(textBody)) {
+        textBody = textBody.split(' ');
+
         // SAVE PROTEIN/CALORIES TO THE MLAB DB
         new Macro({
           date: today,
-          protein: 50,
-          calories: 200
+          protein: Number(textBody[0]),
+          calories: Number(textBody[1])
         })
         .save((err) => {
             if (err) console.log("ERROR");
