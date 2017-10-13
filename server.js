@@ -27,7 +27,7 @@ app.get("/", function (req, res) {
 });
 
 app.post('/sms', (req, res) => {
-  const twiml = new MessagingResponse();
+  let twiml = new MessagingResponse();
   let textBody = req.body.Body;
   let date;
   let protein;
@@ -50,8 +50,9 @@ app.post('/sms', (req, res) => {
         .save((err) => {
             if (err) {
               console.log("ERROR");
-
-              twiml.message('Error saving to Mlab')
+              twiml.message('Error saving to Mlab');
+              res.writeHead(200, {'Content-Type': 'text/xml'});              
+              res.end(twiml.toString());
               
               // THIS WHOLE THING FRIKKIN WORKS! SUCCESSFULLY ADDING EACH ENTRY INTO DB
               
