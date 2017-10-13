@@ -56,7 +56,7 @@ app.post('/sms', (req, res) => {
           }
         })
 
-        // THIS WHOLE THING FRIKKIN WORKS! SUCCESSFULLY ADDING EACH ENTRY INTO DB
+        // FIXME: If I keep getting these First Day HTML Retrieval Failure Errors, try chaining the .FIND (below )on to the .SAVE.
               
         // NOW GOTTA READ FROM THE DB - ALL OF TODAY'S ENTRIES
         Macro.find({date: today}, (err, result) => {
@@ -68,7 +68,7 @@ app.post('/sms', (req, res) => {
             res.end(twiml.toString());
             return;
           }
-          // RES IS JUST NICE TIDY JSON
+          // RESULT IS JUST NICE TIDY JSON
       
           // WANNA NOW LOOP THROUGH ALL RETURNED JSON OBJECTS AND CALCULATE TOTAL PROTEIN AND CALORIES, USING THIS TO CREATE THE TWIML RESPONSE. BOOYA!
           dailyTotal = result.reduce((acc, entry) => {
