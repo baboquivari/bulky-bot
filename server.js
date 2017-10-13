@@ -61,17 +61,8 @@ app.post('/sms', (req, res) => {
             return acc;
           }, [0, 0])
 
-          // TODO: JUST GOTTA FIX THE MATH HERE!! Returning weird results sometimes at start of day
-          twiml.message(`
-          Daily totals:
-          Protein: ${dailyTotal[0] + Number(textBody[0])}
-          Calories: ${dailyTotal[1] + Number(textBody[1])}
-          
-          Keep it up! :)
-          `);
-
-          // SAVE PROTEIN/CALORIES TO THE MLAB DB
-          new Macro({
+           // SAVE PROTEIN/CALORIES TO THE MLAB DB
+           new Macro({
             date: today,
             protein: Number(textBody[0]),
             calories: Number(textBody[1])
@@ -83,15 +74,20 @@ app.post('/sms', (req, res) => {
             res.writeHead(200, {'Content-Type': 'text/xml'});              
             res.end(twiml.toString());
             }
+            // TODO: JUST GOTTA FIX THE MATH HERE!! Returning weird results sometimes at start of day
+            twiml.message(`
+            Daily totals:
+            Protein: ${dailyTotal[0] + Number(textBody[0])}
+            Calories: ${dailyTotal[1] + Number(textBody[1])}
+            
+            Keep it up! :)
+            `);
+            res.writeHead(200, {'Content-Type': 'text/xml'});
+            res.end(twiml.toString());
+            return;
           })
-    
-          res.writeHead(200, {'Content-Type': 'text/xml'});
-          res.end(twiml.toString());
-          return;
       })
 
-
-      
       } else { // IF THERE'S NO NUMBERS IN THE TEXT BODY
         twiml.message('BulkyBot hears you!')
         res.writeHead(200, {'Content-Type': 'text/xml'});
