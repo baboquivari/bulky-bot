@@ -19,7 +19,7 @@ mongoose.connect('mongodb://Tony:password@ds143734.mlab.com:43734/bulkybot');
 const hasNumber = str => /\d/.test(str); 
 
 // Parses incoming request bodies
-app.use(bodyParser());
+app.use(bodyParser.json());
 
 
 app.get("/", function (req, res) {
@@ -98,6 +98,9 @@ app.post('/sms', (req, res) => {
         res.writeHead(200, {'Content-Type': 'text/xml'});
         res.end(twiml.toString());
       }
+
+      res.writeHead(200, {'Content-Type': 'text/xml'});
+      res.end(twiml.toString());
 
     };
   }
