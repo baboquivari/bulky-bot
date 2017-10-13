@@ -52,55 +52,57 @@ app.post('/sms', (req, res) => {
               console.log("ERROR");
 
               twiml.message('Error saving to Mlab')
-              
-              // THIS WHOLE THING FRIKKIN WORKS! SUCCESSFULLY ADDING EACH ENTRY INTO DB
-              
-              // NOW GOTTA READ FROM THE DB - ALL OF TODAY'S ENTRIES
-              Macro.find({date: today}, (err, result) => {
-                if (err) {
-                  console.log("ERROR!");
-      
-                  twiml.message('Error finding data from MLAB')
-                  res.writeHead(200, {'Content-Type': 'text/xml'});
-                  res.end(twiml.toString());
-                }
-                // RES IS JUST NICE TIDY JSON
-            
-                // WANNA NOW LOOP THROUGH ALL RETURNED JSON OBJECTS AND CALCULATE TOTAL PROTEIN AND CALORIES, USING THIS TO CREATE THE TWIML RESPONSE. BOOYA!
-                dailyTotal = result.reduce((acc, entry) => {
-                  acc[0] += entry.protein;
-                  acc[1] += entry.calories;
-      
-                  return acc;
-                }, [0, 0])
-      
-                // TODO: JUST GOTTA FIX THE MATH HERE!! Returning weird results sometimes at start of day
-                twiml.message(`
-                Daily totals:
-                Protein: ${dailyTotal[0] + Number(textBody[0])}
-                Calories: ${dailyTotal[1] + Number(textBody[1])}
-                
-                Keep it up! :)
-                `);
-          
-                res.writeHead(200, {'Content-Type': 'text/xml'});
-                res.end(twiml.toString());
-            })
-
-          }
+              res.writeHead(200, {'Content-Type': 'text/xml'});
+              res.end(twiml.toString());
+            }
         })
 
+        // THIS WHOLE THING FRIKKIN WORKS! SUCCESSFULLY ADDING EACH ENTRY INTO DB
+        
+        // NOW GOTTA READ FROM THE DB - ALL OF TODAY'S ENTRIES
+        Macro.find({date: today}, (err, result) => {
+          if (err) {
+            console.log("ERROR!");
+
+            twiml.message('Error finding data from MLAB')
+            res.writeHead(200, {'Content-Type': 'text/xml'});
+            res.end(twiml.toString());
+          }
+          // RES IS JUST NICE TIDY JSON
+      
+          // WANNA NOW LOOP THROUGH ALL RETURNED JSON OBJECTS AND CALCULATE TOTAL PROTEIN AND CALORIES, USING THIS TO CREATE THE TWIML RESPONSE. BOOYA!
+          dailyTotal = result.reduce((acc, entry) => {
+            acc[0] += entry.protein;
+            acc[1] += entry.calories;
+
+            return acc;
+          }, [0, 0])
+
+          // TODO: JUST GOTTA FIX THE MATH HERE!! Returning weird results sometimes at start of day
+          twiml.message(`
+          Daily totals:
+          Protein: ${dailyTotal[0] + Number(textBody[0])}
+          Calories: ${dailyTotal[1] + Number(textBody[1])}
+          
+          Keep it up! :)
+          `);
+    
+          res.writeHead(200, {'Content-Type': 'text/xml'});
+          res.end(twiml.toString());
+      })
 
       
       } else { // IF THERE'S NO NUMBERS IN THE TEXT BODY
         twiml.message('BulkyBot hears you!')
-        res.writeHead(200, {'Content-Type': 'text/xml'});
-        res.end(twiml.toString());
+        writeHead();
       }
 
+      return;
     };
   }
-  
+
+  res.writeHead(200, {'Content-Type': 'text/xml'});
+  res.end(twiml.toString());
 });
 
 
