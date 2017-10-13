@@ -41,28 +41,11 @@ app.post('/sms', (req, res) => {
       if (hasNumber(textBody)) {
         textBody = textBody.split('.');
 
-        // SAVE PROTEIN/CALORIES TO THE MLAB DB
-        new Macro({
-          date: today,
-          protein: Number(textBody[0]),
-          calories: Number(textBody[1])
-        })
-        .save((err) => {
-            if (err) {
-              console.log("ERROR");
-              twiml.message('Error saving to Mlab');
-              res.writeHead(200, {'Content-Type': 'text/xml'});              
-              res.end(twiml.toString());
-          }
-        })
-
         // FIXME: If I keep getting these First Day HTML Retrieval Failure Errors, try chaining the .FIND (below )on to the .SAVE.
               
         // NOW GOTTA READ FROM THE DB - ALL OF TODAY'S ENTRIES
         Macro.find({date: today}, (err, result) => {
           if (err) {
-            console.log("ERROR!");
-
             twiml.message('Error finding data from MLAB')
             res.writeHead(200, {'Content-Type': 'text/xml'});
             res.end(twiml.toString());
@@ -86,6 +69,21 @@ app.post('/sms', (req, res) => {
           
           Keep it up! :)
           `);
+
+          // SAVE PROTEIN/CALORIES TO THE MLAB DB
+          new Macro({
+            date: today,
+            protein: Number(textBody[0]),
+            calories: Number(textBody[1])
+          })
+          .save((err) => {
+            if (err) {
+            console.log("ERROR");
+            twiml.message('Error saving to Mlab');
+            res.writeHead(200, {'Content-Type': 'text/xml'});              
+            res.end(twiml.toString());
+            }
+          })
     
           res.writeHead(200, {'Content-Type': 'text/xml'});
           res.end(twiml.toString());
@@ -115,3 +113,7 @@ app.listen(PORT, (err) => {
   }
   console.log(`listening on port ${PORT}`);
 });
+
+
+/////////
+
