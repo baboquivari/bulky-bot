@@ -2,3 +2,5 @@ node_modules
 BULKYBOT_WORK_FLOW
 ERROR-CATCHERS
 PROGRESS
+sendSMS.js
+.env

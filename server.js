@@ -7,6 +7,7 @@ const moment = require('moment');
 const mongoose = require('mongoose');
 const Macro = require('./model.js');
 const today = moment().format("MMM Do YY");
+require('dotenv').config();
 
 
 const PORT = process.env.PORT || 3000; // NEED TO CHANG THIS TO 9090 when hosting on HEROKU
